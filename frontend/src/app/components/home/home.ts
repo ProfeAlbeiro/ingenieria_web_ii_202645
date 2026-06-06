@@ -10,12 +10,27 @@ import { HousingService } from '../housing-service';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home {
-     housingLocationList: HousingLocationInterface[] = [];
-     housingService: HousingService = inject(HousingService);
 
-     constructor() {
-       this.housingLocationList = this.housingService.getAllHousingLocations();
-     }
+export class Home {
+
+  housingLocationList: HousingLocationInterface[] = [];
+  housingService: HousingService = inject(HousingService);
+  filteredLocationList: HousingLocationInterface[] = [];
+
+  constructor() {
+    this.housingLocationList = this.housingService.getAllHousingLocations();
+    this.filteredLocationList = this.housingLocationList;
+  }
+
+  filterResults(text:string){
+    if (!text) {
+      this.filteredLocationList = this.housingLocationList;
+      return;
+    } else {
+      this.filteredLocationList = this.housingLocationList.filter((HousingLocation) =>
+        HousingLocation?.city.toLowerCase().includes(text.toLowerCase())
+      )
+    }
+  }
 
 }
